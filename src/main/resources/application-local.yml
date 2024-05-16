@@ -15,10 +15,6 @@ spring:
     mongodb:
       uri: mongodb://root:1234@localhost:47017/keepham
 
-    redis:
-      host: localhost
-      port: 46379
-
 logging:
   level:
     org.hibernate.sql: debug
