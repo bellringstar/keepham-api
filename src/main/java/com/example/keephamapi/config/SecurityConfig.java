@@ -2,6 +2,7 @@ package com.example.keephamapi.config;
 
 import com.example.keephamapi.security.CustomAuthenticationProvider;
 import com.example.keephamapi.security.CustomUserDetailService;
+import com.example.keephamapi.security.filter.ExceptionHandlerFilter;
 import com.example.keephamapi.security.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +39,7 @@ public class SecurityConfig {
                         SessionCreationPolicy.STATELESS));
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new ExceptionHandlerFilter(), jwtAuthenticationFilter.getClass());
         return http.build();
     }
 
