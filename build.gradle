@@ -60,6 +60,10 @@ dependencies {
 
     //쿼리파라미터 확인
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+
+    //LocalDateTime redis 직렬화, 역직렬화 문제 해결
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 
 tasks.named('test') {

@@ -1,6 +1,7 @@
 package com.example.keephamapi.domain.member.entity;
 
 import com.example.keephamapi.common.entity.BaseTimeEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -9,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,6 +21,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonIgnoreProperties({"username", "authorities", "enabled", "accountNonExpired", "accountNonLocked",
+        "credentialsNonExpired"})
 public class Member extends BaseTimeEntity implements Serializable, UserDetails {
 
     @Id

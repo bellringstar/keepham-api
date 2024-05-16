@@ -9,3 +9,5 @@ spring:
           max-idle: 8
           min-idle: 0
         shutdown-timeout: 100ms
+      ttl: 30
+

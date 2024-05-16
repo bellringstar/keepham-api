@@ -33,7 +33,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         Api<Object> apiResponse = Api.ERROR(ErrorCode.SERVER_ERROR, ex.getLocalizedMessage());
-
+        ex.printStackTrace();
         try {
             String json = objectMapper.writeValueAsString(apiResponse);
             response.getWriter().write(json);

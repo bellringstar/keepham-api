@@ -9,8 +9,8 @@
 - [ ] 인증
   - [x] jwt 토큰을 통한 인증
   - [ ] 토큰의 유효시간이 지났을 때 리프레쉬 토큰을 통한 토큰 갱신 로직
-  - [ ] 토큰 인증 후 사용자 정보를 Security Context에 저장
-    - [ ] loadByUsername 메서드에서 redis를 캐시로 사용, 정보가 있다면 그걸 사용 없다면 db에서 가져와 저장
+  - [x] 토큰 인증 후 사용자 정보를 Security Context에 저장
+    - [x] loadByUsername 메서드에서 redis를 캐시로 사용
   - [x] 회원가입
   - [x] 로그인
     - [x] security의 구조화된 방식으로 인증처리
