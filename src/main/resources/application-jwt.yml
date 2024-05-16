@@ -1,0 +1,3 @@
+jwt:
+  secret: tempfdasfdsafsdafsdafasdf1412412afdsafsdafdsfsdafgdasgdasgasdgasdgdasgsdafgsdafasdfsdafsdfasdf
+  expiration: 10
