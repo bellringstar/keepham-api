@@ -19,10 +19,6 @@ public class GlobalExceptionHandler {
     ) {
         log.error("", exception);
 
-        System.out.println("exception.getCause() = " + exception.getCause());
-        System.out.println("exception.getLocalizedMessage() = " + exception.getLocalizedMessage());
-        System.out.println("exception.getMessage() = " + exception.getMessage());
-
         return ResponseEntity
                 .status(ErrorCode.SERVER_ERROR.getErrorCode())
                 .body(
