@@ -2,7 +2,6 @@ package com.example.keephamapi.security.filter;
 
 import com.example.keephamapi.common.api.Api;
 import com.example.keephamapi.common.error.ErrorCode;
-import com.example.keephamapi.common.error.jwt.JwtErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
