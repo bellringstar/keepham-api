@@ -43,10 +43,15 @@ public class Box {
     private String password; //box를 열 수 있는 패스워드
 
     @Builder
-    public Box(BoxStatus status, ChatRoom chatRoom, Address address, Coordinate coordinate) {
+    public Box(BoxStatus status, ChatRoom chatRoom, Address address, Coordinate coordinate, String password) {
         this.status = status;
         this.chatRoom = chatRoom;
         this.address = address;
         this.coordinate = coordinate;
+        this.password = password;
+    }
+
+    public void useBox() {
+        this.status = BoxStatus.IN_USE;
     }
 }

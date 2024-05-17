@@ -2,13 +2,19 @@ package com.example.keephamapi.domain.member.entity;
 
 import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.common.entity.BaseTimeEntity;
+import com.example.keephamapi.common.error.ErrorCode;
+import com.example.keephamapi.common.exception.ApiException;
+import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -51,6 +57,10 @@ public class Member extends BaseTimeEntity implements Serializable, UserDetails 
     @Embedded
     private Address address;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chatroom_id")
+    private ChatRoom chatRoom;
+
     @Builder
     public Member(String loginId, String password, String name, String nickName, String tel, String email,
                   Address homeAddress) {
@@ -91,5 +101,18 @@ public class Member extends BaseTimeEntity implements Serializable, UserDetails 
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void enterChatRoom(ChatRoom chatRoom) {
+        if (chatRoom.getMembers().contains(this)) {
+            throw new ApiException(ErrorCode.BAD_REQUEST, "이미 입장중인 유저입니다.");
+        }
+        chatRoom.getMembers().add(this);
+        this.chatRoom = chatRoom;
+    }
+
+    public void exitChatRoom() {
+        chatRoom.getMembers().remove(this);
+        this.chatRoom = null;
     }
 }
