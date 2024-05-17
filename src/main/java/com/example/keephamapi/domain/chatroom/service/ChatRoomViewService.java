@@ -1,8 +1,12 @@
 package com.example.keephamapi.domain.chatroom.service;
 
+import com.example.keephamapi.domain.chatroom.dto.ChatRoomResponse;
+import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
 import com.example.keephamapi.domain.chatroom.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,4 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatRoomViewService {
 
     private final ChatRoomRepository chatRoomRepository;
+
+    public Page<ChatRoomResponse> getAllChatRooms(Pageable pageable) {
+
+        Page<ChatRoom> allChatRoom = chatRoomRepository.findAllChatRoom(pageable);
+
+        return allChatRoom.map(ChatRoomResponse::toResponse);
+    }
+
 }

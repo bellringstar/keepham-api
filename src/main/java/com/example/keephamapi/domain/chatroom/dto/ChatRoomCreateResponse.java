@@ -1,7 +1,9 @@
 package com.example.keephamapi.domain.chatroom.dto;
 
+import com.example.keephamapi.domain.box.dto.BoxResponse;
 import com.example.keephamapi.domain.box.entity.Box;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
+import com.example.keephamapi.domain.store.dto.StoreResponse;
 import com.example.keephamapi.domain.store.entity.Store;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,9 +28,9 @@ public class ChatRoomCreateResponse {
 
     private String password; //비공개일시 패스워드
 
-    private Store store; //해당 채팅방에 연결된 가게
+    private StoreResponse store; //해당 채팅방에 연결된 가게
 
-    private Box box; //해당 채팅방에 연동된 box
+    private BoxResponse box; //해당 채팅방에 연동된 box
 
     public static ChatRoomCreateResponse toResponse(ChatRoom chatRoom) {
         return ChatRoomCreateResponse
@@ -38,8 +40,8 @@ public class ChatRoomCreateResponse {
                 .superUserId(chatRoom.getSuperUserId())
                 .locked(chatRoom.isLocked())
                 .password(chatRoom.getPassword())
-                .store(chatRoom.getStore())
-                .box(chatRoom.getBox())
+                .store(StoreResponse.toResponse(chatRoom.getStore()))
+                .box(BoxResponse.toResponse(chatRoom.getBox()))
                 .build();
     }
 }
