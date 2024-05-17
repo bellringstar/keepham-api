@@ -1,6 +1,7 @@
 package com.example.keephamapi.domain.chatroom.service;
 
 import com.example.keephamapi.domain.chatroom.dto.ChatRoomResponse;
+import com.example.keephamapi.domain.chatroom.dto.ChatRoomSearchCond;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
 import com.example.keephamapi.domain.chatroom.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,17 @@ public class ChatRoomViewService {
         Page<ChatRoom> allChatRoom = chatRoomRepository.findAllChatRoom(pageable);
 
         return allChatRoom.map(ChatRoomResponse::toResponse);
+    }
+
+    public Page<ChatRoomResponse> getChatRooms(ChatRoomSearchCond cond, Pageable pageable) {
+
+        if (cond == null) {
+            return getAllChatRooms(pageable);
+        }
+
+        Page<ChatRoom> chatRoomResponses = chatRoomRepository.searchChatRoom(cond, pageable);
+
+        return chatRoomResponses.map(ChatRoomResponse::toResponse);
     }
 
 }

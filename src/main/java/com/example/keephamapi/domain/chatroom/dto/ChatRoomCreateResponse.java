@@ -7,6 +7,7 @@ import com.example.keephamapi.domain.store.dto.StoreResponse;
 import com.example.keephamapi.domain.store.entity.Store;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class ChatRoomCreateResponse {
 
     private String title; //방제목

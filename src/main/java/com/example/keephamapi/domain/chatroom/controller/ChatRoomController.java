@@ -4,6 +4,7 @@ import com.example.keephamapi.common.api.Api;
 import com.example.keephamapi.domain.chatroom.dto.ChatRoomCreateRequest;
 import com.example.keephamapi.domain.chatroom.dto.ChatRoomCreateResponse;
 import com.example.keephamapi.domain.chatroom.dto.ChatRoomResponse;
+import com.example.keephamapi.domain.chatroom.dto.ChatRoomSearchCond;
 import com.example.keephamapi.domain.chatroom.service.ChatRoomService;
 import com.example.keephamapi.domain.chatroom.service.ChatRoomViewService;
 import jakarta.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,12 +40,17 @@ public class ChatRoomController {
     }
 
     @GetMapping
-    public Api<Page<ChatRoomResponse>> getAllChatRooms(@PageableDefault(
-            size = 10, sort = "createdDate", direction = Direction.DESC
-    ) Pageable pageable) {
+    public Api<Page<ChatRoomResponse>> getChatRooms(@RequestParam(required = false) String title,
+            @RequestParam(required = false) String storeName
+            , @PageableDefault Pageable pageable) {
 
-        Page<ChatRoomResponse> allChatRooms = chatRoomViewService.getAllChatRooms(pageable);
+        ChatRoomSearchCond chatRoomSearchCond = ChatRoomSearchCond.builder()
+                .title(title)
+                .storeName(storeName)
+                .build();
 
-        return Api.OK(allChatRooms);
+        Page<ChatRoomResponse> chatRooms = chatRoomViewService.getChatRooms(chatRoomSearchCond, pageable);
+
+        return Api.OK(chatRooms);
     }
 }

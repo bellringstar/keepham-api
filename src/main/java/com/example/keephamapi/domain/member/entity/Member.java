@@ -29,7 +29,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonIgnoreProperties({"username", "authorities", "enabled", "accountNonExpired", "accountNonLocked",
-        "credentialsNonExpired"})
+        "credentialsNonExpired", "chatRoom"})
 public class Member extends BaseTimeEntity implements Serializable, UserDetails {
 
     @Id
