@@ -1,6 +1,6 @@
 package com.example.keephamapi.domain.member.dto;
 
-import com.example.keephamapi.domain.member.entity.HomeAddress;
+import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +27,7 @@ public class SignUpRequest {
 
     private String email;
 
-    private HomeAddress homeAddress;
+    private Address address;
 
     public Member toEntity() {
         return Member.builder()
@@ -37,7 +37,7 @@ public class SignUpRequest {
                 .nickName(nickName)
                 .tel(tel)
                 .email(email)
-                .address(homeAddress)
+                .homeAddress(address)
                 .build();
     }
 

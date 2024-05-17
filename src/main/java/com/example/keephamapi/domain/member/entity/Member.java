@@ -1,5 +1,6 @@
 package com.example.keephamapi.domain.member.entity;
 
+import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.common.entity.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
@@ -48,18 +49,18 @@ public class Member extends BaseTimeEntity implements Serializable, UserDetails 
     private String email;
 
     @Embedded
-    private HomeAddress homeAddress;
+    private Address address;
 
     @Builder
     public Member(String loginId, String password, String name, String nickName, String tel, String email,
-                  HomeAddress homeAddress) {
+                  Address homeAddress) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.nickName = nickName;
         this.tel = tel;
         this.email = email;
-        this.homeAddress = homeAddress;
+        this.address = address;
     }
 
     @Override
