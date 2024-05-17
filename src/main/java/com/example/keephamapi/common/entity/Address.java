@@ -1,7 +1,6 @@
-package com.example.keephamapi.domain.member.entity;
+package com.example.keephamapi.common.entity;
 
 import jakarta.persistence.Embeddable;
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Getter
-public class Address implements Serializable {
+public class Address {
 
     private String city;
     private String street;

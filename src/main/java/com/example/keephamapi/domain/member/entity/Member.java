@@ -48,18 +48,18 @@ public class Member extends BaseTimeEntity implements Serializable, UserDetails 
     private String email;
 
     @Embedded
-    private Address address;
+    private HomeAddress homeAddress;
 
     @Builder
     public Member(String loginId, String password, String name, String nickName, String tel, String email,
-                  Address address) {
+                  HomeAddress homeAddress) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.nickName = nickName;
         this.tel = tel;
         this.email = email;
-        this.address = address;
+        this.homeAddress = homeAddress;
     }
 
     @Override
