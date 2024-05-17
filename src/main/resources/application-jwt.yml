@@ -1,3 +1,6 @@
+#토큰 : 분단위, 리프레쉬 : 일단위
+
 jwt:
   secret: tempfdasfdsafsdafsdafasdf1412412afdsafsdafdsfsdafgdasgdasgasdgasdgdasgsdafgsdafasdfsdafsdfasdf
   expiration: 30
+  refresh: 1

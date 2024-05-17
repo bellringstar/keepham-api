@@ -31,6 +31,9 @@ public class JwtTokenProvider {
     @Value("${expiration}")
     private int jwtExpiration;
 
+    @Value("${refresh}")
+    private int jwtRefreshExpiration;
+
     private SecretKey secretKey;
 
     @PostConstruct
@@ -38,11 +41,10 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret));
     }
 
-    public TokenDto generateToken(String loginId) {
+    public String generateToken(String loginId) {
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime accessTokenExpire = now.plusMinutes(jwtExpiration);
-        LocalDateTime refreshTokenExpire = now.plusMinutes(jwtExpiration).plusMinutes(60);
 
         String accessToken =  Jwts.builder()
                 .setSubject(loginId)
@@ -51,6 +53,14 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
 
+        return accessToken;
+    }
+
+    public String generateRefreshToken(String loginId) {
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime refreshTokenExpire = now.plusDays(jwtRefreshExpiration);
+
         String refreshToken =  Jwts.builder()
                 .setSubject(loginId)
                 .setIssuedAt(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()))
@@ -58,7 +68,7 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
 
-        return new TokenDto(accessToken, refreshToken);
+        return refreshToken;
     }
 
     public String getUserIdFromJwt(String token) {

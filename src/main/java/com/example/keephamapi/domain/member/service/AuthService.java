@@ -10,11 +10,13 @@ import com.example.keephamapi.domain.member.entity.Member;
 import com.example.keephamapi.domain.member.repository.MemberRepository;
 import com.example.keephamapi.security.jwt.JwtTokenProvider;
 import com.example.keephamapi.security.jwt.TokenDto;
+import com.example.keephamapi.security.jwt.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,9 +50,11 @@ public class AuthService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.getLoginId(), request.getPassword());
 
         Authentication authentication = authenticationProvider.authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String accessToken = tokenProvider.generateToken(authentication.getName());
+        String refreshToken = tokenProvider.generateRefreshToken(authentication.getName());
 
-        TokenDto token = tokenProvider.generateToken(authentication.getName());
-
-        return new LoginResponse(token.getAccessToken(), token.getRefreshToken());
+        return new LoginResponse(accessToken, refreshToken);
     }
+
 }
