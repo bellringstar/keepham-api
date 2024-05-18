@@ -1,5 +1,6 @@
 package com.example.keephamapi.domain.chat.dto;
 
+import com.example.keephamapi.domain.chat.entity.enums.MessageType;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,10 +17,10 @@ public class ChatMessageRequest {
 
     private Long roomId;
 
-    private String senderId;
-
     private String content;
 
     private LocalDateTime timestamp;
+
+    private MessageType messageType;
 
 }

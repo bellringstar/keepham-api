@@ -16,10 +16,7 @@ spring:
     open-in-view: false
   data:
     mongodb:
-      uri: mongodb://root:1234@localhost:47017/keepham
-      username: root
-      password: 1234
-
+      uri: mongodb://root:1234@localhost:47017/keepham?authSource=admin
 logging:
   level:
     org.hibernate.sql: debug

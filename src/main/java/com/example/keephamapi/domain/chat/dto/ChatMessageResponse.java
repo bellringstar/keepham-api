@@ -1,6 +1,7 @@
 package com.example.keephamapi.domain.chat.dto;
 
 import com.example.keephamapi.domain.chat.entity.ChatMessage;
+import com.example.keephamapi.domain.chat.entity.enums.MessageType;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,8 @@ public class ChatMessageResponse {
 
     private LocalDateTime timestamp;
 
+    private MessageType messageType;
+
     public static ChatMessageResponse toResponse(ChatMessage message) {
         return ChatMessageResponse.builder()
                 .id(message.getId())
@@ -32,6 +35,7 @@ public class ChatMessageResponse {
                 .senderId(message.getSenderId())
                 .content(message.getContent())
                 .timestamp(message.getTimestamp())
+                .messageType(message.getMessageType())
                 .build();
     }
 }

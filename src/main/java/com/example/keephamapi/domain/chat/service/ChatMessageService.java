@@ -6,21 +6,25 @@ import com.example.keephamapi.domain.chat.entity.ChatMessage;
 import com.example.keephamapi.domain.chat.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class ChatMessageService {
 
     private final ChatMessageRepository chatMessageRepository;
+    private final KafkaProducerService kafkaProducerService;
 
-    public ChatMessageResponse save(ChatMessageRequest request) {
+    public ChatMessageResponse save(ChatMessageRequest request, Authentication auth) {
 
         ChatMessage chatMessage = ChatMessage
                 .builder()
                 .roomId(request.getRoomId())
-                .senderId(request.getSenderId())
+                .senderId(auth.getName())
                 .content(request.getContent())
                 .timestamp(request.getTimestamp())
                 .build();
@@ -28,5 +32,10 @@ public class ChatMessageService {
         chatMessageRepository.save(chatMessage);
 
         return ChatMessageResponse.toResponse(chatMessage);
+    }
+
+    public void send(ChatMessageRequest request, Authentication auth) {
+        save(request, auth);
+        kafkaProducerService.sendMessage("chatting", request);
     }
 }

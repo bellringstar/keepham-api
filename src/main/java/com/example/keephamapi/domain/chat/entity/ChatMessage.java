@@ -1,5 +1,6 @@
 package com.example.keephamapi.domain.chat.entity;
 
+import com.example.keephamapi.domain.chat.entity.enums.MessageType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -24,11 +25,14 @@ public class ChatMessage {
 
     private LocalDateTime timestamp;
 
+    private MessageType messageType;
+
     @Builder
-    public ChatMessage(Long roomId, String senderId, String content, LocalDateTime timestamp) {
+    public ChatMessage(Long roomId, String senderId, String content, LocalDateTime timestamp, MessageType messageType) {
         this.roomId = roomId;
         this.senderId = senderId;
         this.content = content;
         this.timestamp = timestamp;
+        this.messageType = messageType;
     }
 }
