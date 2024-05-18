@@ -5,7 +5,7 @@ import com.example.keephamapi.domain.chat.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 public class KafkaConsumerService {
 
     private final ChatMessageRepository chatMessageRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    @SendTo("/topic/public")
-    @KafkaListener(topics = "${kafka.chat.topic}", groupId = "${kafka.chat.group-id}")
-    public ChatMessage consumeMessage(ChatMessage message) {
+    @KafkaListener(topicPattern = "chat-.*", groupId = "${kafka.chat.group-id}")
+    public void consumeMessage(ChatMessage message) {
         chatMessageRepository.save(message);
-        return message;
+        messagingTemplate.convertAndSend("/topic/" + message.getRoomId(), message); // WebSocket으로 전송
     }
 }

@@ -36,6 +36,6 @@ public class ChatMessageService {
 
     public void send(ChatMessageRequest request, Authentication auth) {
         save(request, auth);
-        kafkaProducerService.sendMessage("chatting", request);
+        kafkaProducerService.sendMessage("chat-" + request.getRoomId(), request);
     }
 }
