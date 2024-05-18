@@ -19,8 +19,6 @@ public class ChatMessageRequest {
 
     private String content;
 
-    private LocalDateTime timestamp;
-
     private MessageType messageType;
 
 }

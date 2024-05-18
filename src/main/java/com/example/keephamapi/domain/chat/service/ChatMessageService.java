@@ -4,6 +4,7 @@ import com.example.keephamapi.domain.chat.dto.ChatMessageRequest;
 import com.example.keephamapi.domain.chat.dto.ChatMessageResponse;
 import com.example.keephamapi.domain.chat.entity.ChatMessage;
 import com.example.keephamapi.domain.chat.repository.ChatMessageRepository;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,23 +20,29 @@ public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
     private final KafkaProducerService kafkaProducerService;
 
-    public ChatMessageResponse save(ChatMessageRequest request, Authentication auth) {
+    private final String SYSTEM = "system";
+    private final String TOPIC = "chat-";
+
+    private void save(ChatMessageRequest request, String loginId) {
 
         ChatMessage chatMessage = ChatMessage
                 .builder()
                 .roomId(request.getRoomId())
-                .senderId(auth.getName())
+                .senderId(loginId)
                 .content(request.getContent())
-                .timestamp(request.getTimestamp())
+                .timestamp(LocalDateTime.now())
                 .build();
 
         chatMessageRepository.save(chatMessage);
-
-        return ChatMessageResponse.toResponse(chatMessage);
     }
 
-    public void send(ChatMessageRequest request, Authentication auth) {
-        save(request, auth);
-        kafkaProducerService.sendMessage("chat-" + request.getRoomId(), request);
+    public void send(ChatMessageRequest request, String loginId) {
+        save(request, loginId);
+        kafkaProducerService.sendMessage(TOPIC + request.getRoomId(), request);
+    }
+
+    public void broadcast(ChatMessageRequest request) {
+        save(request, SYSTEM);
+        kafkaProducerService.sendMessage(TOPIC + request.getRoomId(), request);
     }
 }

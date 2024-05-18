@@ -1,5 +1,6 @@
 package com.example.keephamapi.domain.chat.service;
 
+import com.example.keephamapi.domain.chat.dto.ChatMessageResponse;
 import com.example.keephamapi.domain.chat.entity.ChatMessage;
 import com.example.keephamapi.domain.chat.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,6 @@ public class KafkaConsumerService {
     @KafkaListener(topicPattern = "chat-.*", groupId = "${kafka.chat.group-id}")
     public void consumeMessage(ChatMessage message) {
         chatMessageRepository.save(message);
-        messagingTemplate.convertAndSend("/topic/" + message.getRoomId(), message); // WebSocket으로 전송
+        messagingTemplate.convertAndSend("/topic/" + message.getRoomId(), ChatMessageResponse.toResponse(message)); // WebSocket으로 전송
     }
 }
