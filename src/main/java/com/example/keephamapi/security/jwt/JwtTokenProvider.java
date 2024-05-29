@@ -82,13 +82,14 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    public void validateToken(String token) {
+    public boolean validateToken(String token) {
 
         try {
             Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token);
+            return true;
         } catch (JwtException | IllegalArgumentException e) {
             throw e;
         }
