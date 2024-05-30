@@ -7,13 +7,4 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:1234@localhost:47017/keepham?authSource=admin
-    redis:
-      host: localhost
-      port: 46379
-      lettuce:
-        pool:
-          max-active: 8
-          max-idle: 8
-          min-idle: 0
-        shutdown-timeout: 100ms
-      ttl: 30
+

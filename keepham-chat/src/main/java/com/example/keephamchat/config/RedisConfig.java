@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -13,6 +14,7 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
+@PropertySource("classpath:application-redis.yml")
 @ConfigurationProperties(prefix = "spring.data.redis")
 @EnableCaching
 public class RedisConfig {
@@ -21,8 +23,6 @@ public class RedisConfig {
     private String host;
     @Value("${port}")
     private int port;
-    @Value("${ttl}")
-    private long ttl;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
