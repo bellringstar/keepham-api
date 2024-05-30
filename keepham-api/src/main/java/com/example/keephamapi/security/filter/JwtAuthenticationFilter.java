@@ -9,8 +9,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +30,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final CustomUserDetailService userDetailService;
 
+    private final RedisTemplate<String, String> redisTemplate;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -38,6 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(jwt)) {
                 tokenProvider.validateToken(jwt);
                 String userId = tokenProvider.getUserIdFromJwt(jwt);
+                redisTemplate.opsForValue().set(jwt, userId, Duration.ofMinutes(1));
                 UserDetails userDetails = userDetailService.loadUserByUsername(userId);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
