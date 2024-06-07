@@ -18,6 +18,14 @@ public class ChatMessageRequest implements Serializable {
     private String chatroomId;
     private String message;
 
+    @Override
+    public String toString() {
+        return "ChatMessageRequest{" +
+                "chatroomId='" + chatroomId + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
+
     public static ChatMessage toChatMessage(ChatMessageRequest request, String userId) {
         return ChatMessage.builder()
                 .userId(userId)

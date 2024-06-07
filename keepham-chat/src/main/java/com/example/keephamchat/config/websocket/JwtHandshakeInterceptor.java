@@ -1,10 +1,13 @@
 package com.example.keephamchat.config.websocket;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -28,7 +31,8 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
                                    Map<String, Object> attributes) throws Exception {
         if (request instanceof ServletServerHttpRequest) {
             HttpServletRequest servletRequest = ((ServletServerHttpRequest) request).getServletRequest();
-            String token = extractToken(servletRequest);
+//            String token = extractToken(servletRequest);
+            String token = servletRequest.getParameter("token");
             if (token != null) {
                 return validateToken(token, attributes, response);
             }

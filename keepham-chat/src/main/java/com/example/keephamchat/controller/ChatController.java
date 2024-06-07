@@ -16,8 +16,9 @@ public class ChatController {
     private final ChatroomService chatroomService;
 
     @MessageMapping("/chat.sendMessage")
-    public void sendMessage(ChatMessageRequest request, WebSocketSession session) {
-        chatroomService.sendMessage(request, getUserIdFromSession(session));
+    public void sendMessage(ChatMessageRequest request) {
+        //TODO: 세션에서 사용자 ID 가져오는걸로 변경
+        chatroomService.sendMessage(request, "tester1");
     }
 
     private String getUserIdFromSession(WebSocketSession session) {

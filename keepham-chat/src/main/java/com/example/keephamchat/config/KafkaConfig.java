@@ -1,5 +1,6 @@
 package com.example.keephamchat.config;
 
+import com.example.keephamchat.entity.ChatMessage;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -20,6 +21,7 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.kafka.transaction.KafkaTransactionManager;
 
 @EnableKafka
 @Configuration
@@ -33,36 +35,42 @@ public class KafkaConfig {
     private String groupId;
 
     @Bean
-    public ProducerFactory<String, Object> producerFactory() {
+    public ProducerFactory<String, ChatMessage> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        configProps.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "tx-");
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
     @Bean
-    public KafkaTemplate<String, Object> kafkaTemplate() {
+    public KafkaTemplate<String, ChatMessage> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
     @Bean
-    public ConsumerFactory<String, Object> consumerFactory() {
+    public ConsumerFactory<String, ChatMessage> consumerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         configProps.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
-        configProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
+        configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        configProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, ErrorHandlingDeserializer.class.getName());
         configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         return new DefaultKafkaConsumerFactory<>(configProps);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, ChatMessage> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, ChatMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setReplyTemplate(kafkaTemplate());
         return factory;
+    }
+
+    @Bean
+    public KafkaTransactionManager<String, ChatMessage> kafkaTransactionManager() {
+        return new KafkaTransactionManager<>(producerFactory());
     }
 }

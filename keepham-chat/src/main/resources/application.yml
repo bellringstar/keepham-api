@@ -6,5 +6,6 @@ spring:
     active: local
   data:
     mongodb:
-      uri: mongodb://root:1234@localhost:47017/keepham?authSource=admin
-
+      uri: mongodb://root:1234@mongodb1:47017,mongodb2:47018,mongodb3:47019/keepham?replicaSet=rs0&authSource=admin
+  jpa:
+    open-in-view: false
