@@ -169,5 +169,5 @@ gradle-app.setting
 *.hprof
 
 mongodb/**
-
+mongodb-keyfile
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,gradle,java,windows

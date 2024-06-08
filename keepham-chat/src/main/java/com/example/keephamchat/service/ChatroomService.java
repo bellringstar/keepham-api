@@ -30,15 +30,6 @@ public class ChatroomService {
     private final KafkaTransactionManager<String, ChatMessage> kafkaTransactionManager;
 
     @Transactional(transactionManager = "mongoTransactionManager")
-    public void test(String ex) {
-        ChatMessage chatMessage = new ChatMessage();
-        chatMessageRepository.save(chatMessage);
-        if (ex.equals("ex")) {
-            throw new RuntimeException();
-        }
-    }
-
-    @Transactional(transactionManager = "mongoTransactionManager")
     public void sendMessage(ChatMessageRequest request, String userId) {
         if (userId == null) {
             //TODO: 세션에서 유저ID 가져오는 곳으로 이동 후 예외를 던지는 방식으로 변경

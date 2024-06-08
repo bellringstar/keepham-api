@@ -14,9 +14,6 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
-    volumes:
-      - /var/lib/zookeeper-1/data
-      - /var/lib/zookeeper-1/log
     networks:
       - my_network
 
@@ -29,9 +26,6 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2182:2181"
-    volumes:
-      - /var/lib/zookeeper-2/data
-      - /var/lib/zookeeper-2/log
     networks:
       - my_network
 
@@ -44,9 +38,6 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2183:2181"
-    volumes:
-      - /var/lib/zookeeper-3/data
-      - /var/lib/zookeeper-3/log
     networks:
       - my_network
 
@@ -60,8 +51,6 @@ services:
     ports:
       - "9092:9092"
       - "19092:19092"
-    volumes:
-      - /var/lib/kafka-1/data
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181
@@ -83,8 +72,6 @@ services:
     ports:
       - "9093:9092"
       - "19093:19093"
-    volumes:
-      - /var/lib/kafka-2/data
     environment:
       KAFKA_BROKER_ID: 2
       KAFKA_ZOOKEEPER_CONNECT: zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181
@@ -106,8 +93,6 @@ services:
     ports:
       - "9094:9092"
       - "19094:19094"
-    volumes:
-      - /var/lib/kafka-3/data
     environment:
       KAFKA_BROKER_ID: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181
@@ -119,18 +104,55 @@ services:
     networks:
       - my_network
 
-  mongodb:
+  mongodb1:
     image: mongo
-    container_name: mongodb
+    container_name: mongodb1
     restart: always
+    hostname: mongodb1
     ports:
-      - "47017:27017"
-    volumes:
-      - /data/db
+      - "27017:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=1234
-      - MONGO_INITDB_DATABASE=keepham
+      MONGO_INITDB_ROOT_USERNAME: root"
+      MONGO_INITDB_ROOT_PASSWORD: 1234
+      MONGO_INITDB_DATABASE: keepham
+    volumes:
+      - ./init-mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    command: >
+      bash -c 'mongod --replSet rs0 --bind_ip_all'
+    networks:
+      - my_network
+
+  mongodb2:
+    image: mongo
+    container_name: mongodb2
+    restart: always
+    hostname: mongodb2
+    ports:
+      - "27018:27018"
+    environment:
+      MONGO_INITDB_DATABASE: keepham
+    volumes:
+      - ./init-mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    command: >
+      bash -c 'mongod --replSet rs0 --bind_ip_all --port 27018'
+    networks:
+      - my_network
+
+  mongodb3:
+    image: mongo
+    container_name: mongodb3
+    restart: always
+    hostname: mongodb3
+    ports:
+      - "27019:27019"
+    environment:
+      MONGO_INITDB_DATABASE: keepham
+    volumes:
+      - ./init-mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    # command: >
+    #   bash -c 'mongod --replSet rs0 --keyFile /etc/mongo-keyfile --bind_ip_all'
+    command: >
+      bash -c 'mongod --replSet rs0 --bind_ip_all --port 27019'
     networks:
       - my_network
 
@@ -139,7 +161,7 @@ services:
     container_name: mysql
     restart: always
     ports:
-      - "43306:3306" # HOST:CONTAINER
+      - "43306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 1234
     command:
@@ -163,3 +185,27 @@ services:
       - "46379:6379"
     networks:
       - my_network
+
+  akhq:
+    image: tchiotludo/akhq
+    container_name: akhq
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          server:
+            access-log: true
+            base-path: /
+          connections:
+            kafka-cluster:
+              properties:
+                bootstrap.servers: "kafka-1:9092,kafka-2:9092,kafka-3:9092"
+    ports:
+      - "9999:8080"
+    networks:
+      - my_network
+    depends_on:
+      - kafka-1
+      - kafka-2
+      - kafka-3
+
+

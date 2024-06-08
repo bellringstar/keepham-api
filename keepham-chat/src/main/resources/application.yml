@@ -6,6 +6,9 @@ spring:
     active: local
   data:
     mongodb:
-      uri: mongodb://root:1234@mongodb1:47017,mongodb2:47018,mongodb3:47019/keepham?replicaSet=rs0&authSource=admin
+      uri: mongodb://mongodb1:27017,mongodb2:27018,mongodb3:27019/keepham?replicaSet=rs0&authSource=admin
   jpa:
     open-in-view: false
+logging:
+  level:
+    sql: debug

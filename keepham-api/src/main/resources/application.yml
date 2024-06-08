@@ -16,7 +16,7 @@ spring:
     open-in-view: false
   data:
     mongodb:
-      uri: mongodb://root:1234@localhost:47017/keepham?authSource=admin
+      uri: mongodb://mongodb1:27017,mongodb2:27018,mongodb3:27019/keepham?replicaSet=rs0&authSource=admin
 logging:
   level:
     org.hibernate.sql: debug
