@@ -31,39 +31,24 @@ public class ChatroomService {
 
     @Transactional(transactionManager = "mongoTransactionManager")
     public void sendMessage(ChatMessageRequest request, String userId) {
-        if (userId == null) {
-            //TODO: 세션에서 유저ID 가져오는 곳으로 이동 후 예외를 던지는 방식으로 변경
-            log.error("세션에 유저 정보가 없습니다.");
-            return;
-        }
 
         ChatMessage chatMessage = ChatMessageRequest.toChatMessage(request, userId);
         chatMessageRepository.save(chatMessage);
 
         String topic = getTopicFromChatroom(request.getChatroomId());
         log.info("sendMessage : {}, topic : {}", request, topic);
-        sendKafkaMessageWithTransaction(topic, request.getChatroomId(), chatMessage);
+        sendKafkaMessage(request, chatMessage);
     }
 
-    private void sendKafkaMessageWithTransaction(String topic, String key, ChatMessage message) {
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        TransactionStatus status = kafkaTransactionManager.getTransaction(def);
+    private void sendKafkaMessage(ChatMessageRequest request, ChatMessage chatMessage) {
+        String topic = getTopicFromChatroom(request.getChatroomId());
+        CompletableFuture<SendResult<String, ChatMessage>> future = kafkaTemplate.send(topic, request.getChatroomId(), chatMessage);
 
-        try {
-            CompletableFuture<SendResult<String, ChatMessage>> future = kafkaTemplate.send(topic, key, message);
-
-            future.thenAccept(result -> {
-                        log.info("Message : {} delivered with offset {}", message, result.getRecordMetadata().offset());
-                        kafkaTransactionManager.commit(status);
-                    })
-                    .exceptionally(ex -> {
-                        log.error("Unable to deliver message [{}]. {}", message, ex.getMessage());
-                        throw new KafkaException("kafka send failed", ex);
-                    }).join();
-        } catch (Exception e) {
-            kafkaTransactionManager.rollback(status);
-            throw new KafkaException("kafka send failed", e);
-        }
+        future.thenAccept(result -> log.info("Message : {} delivered with offset {}", chatMessage, result.getRecordMetadata().offset()))
+                .exceptionally(ex -> {
+                    log.error("Unable to deliver message [{}]. {}", chatMessage, ex.getMessage());
+                    throw new KafkaException("Kafka send failed", ex);
+                }).join();
     }
 
     private String getTopicFromChatroom(String chatroomId) {
