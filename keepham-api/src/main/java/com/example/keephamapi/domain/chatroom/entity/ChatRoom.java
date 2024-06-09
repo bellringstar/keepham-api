@@ -3,7 +3,6 @@ package com.example.keephamapi.domain.chatroom.entity;
 import com.example.keephamapi.common.entity.BaseTimeEntity;
 import com.example.keephamapi.domain.box.entity.Box;
 import com.example.keephamapi.domain.chatroom.entity.enums.ChatRoomStatus;
-import com.example.keephamapi.domain.member.entity.Member;
 import com.example.keephamapi.domain.store.entity.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +27,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ChatRoom extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chatroom_id")
     private Long id;
 
@@ -54,7 +54,7 @@ public class ChatRoom extends BaseTimeEntity {
     private Box box; //해당 채팅방에 연동된 box
 
     @OneToMany(mappedBy = "chatRoom")
-    private List<Member> members = new ArrayList<>();
+    private List<ChatRoomMember> chatRoomMembers = new ArrayList<>();
 
     @Builder
     public ChatRoom(String title, ChatRoomStatus status, Integer maxPeople, String superUserId, boolean locked,

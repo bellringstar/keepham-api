@@ -7,6 +7,7 @@ import com.example.keephamapi.domain.chatroom.dto.ChatRoomCreateResponse;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
 import com.example.keephamapi.domain.chatroom.entity.enums.ChatRoomStatus;
 import com.example.keephamapi.domain.chatroom.repository.ChatRoomRepository;
+import com.example.keephamapi.domain.member.dto.MemberResponse;
 import com.example.keephamapi.domain.member.entity.Member;
 import com.example.keephamapi.domain.member.service.MemberViewService;
 import com.example.keephamapi.domain.store.entity.Store;
@@ -23,15 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
-    private final MemberViewService memberViewService;
-    private final BoxViewService boxViewService;
-    private final StoreViewService storeViewService;
 
-    public ChatRoomCreateResponse createChatRoom(ChatRoomCreateRequest request, String loginId) {
-
-        Member member = memberViewService.findMemberByLoginId(loginId);
-        Store store = storeViewService.findStoreById(request.getStoreId());
-        Box box = boxViewService.getAvailableBoxById(request.getBoxId());
+    public ChatRoomCreateResponse createChatRoom(ChatRoomCreateRequest request, Member member, Store store, Box box) {
 
         box.useBox();
 
@@ -39,14 +33,12 @@ public class ChatRoomService {
                 .title(request.getTitle())
                 .status(ChatRoomStatus.OPEN)
                 .maxPeople(request.getMaxPeople())
-                .superUserId(loginId)
+                .superUserId(member.getLoginId())
                 .locked(request.isLocked())
                 .password(request.getPassword())
                 .store(store)
                 .box(box)
                 .build();
-
-        member.enterChatRoom(chatRoom);
 
         chatRoomRepository.save(chatRoom);
         return ChatRoomCreateResponse.toResponse(chatRoom);

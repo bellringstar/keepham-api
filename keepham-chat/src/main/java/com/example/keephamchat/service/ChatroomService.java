@@ -11,9 +11,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.kafka.transaction.KafkaTransactionManager;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /*
  * 카프카로 메시지 전송 및 토픽 관리를 위한 service
@@ -41,10 +39,13 @@ public class ChatroomService {
     }
 
     private void sendKafkaMessage(ChatMessageRequest request, ChatMessage chatMessage) {
-        String topic = getTopicFromChatroom(request.getChatroomId());
-        CompletableFuture<SendResult<String, ChatMessage>> future = kafkaTemplate.send(topic, request.getChatroomId(), chatMessage);
 
-        future.thenAccept(result -> log.info("Message : {} delivered with offset {}", chatMessage, result.getRecordMetadata().offset()))
+        String topic = getTopicFromChatroom(request.getChatroomId());
+        CompletableFuture<SendResult<String, ChatMessage>> future = kafkaTemplate.send(topic, request.getChatroomId(),
+                chatMessage);
+
+        future.thenAccept(result -> log.info("Message : {} delivered with offset {}", chatMessage,
+                        result.getRecordMetadata().offset()))
                 .exceptionally(ex -> {
                     log.error("Unable to deliver message [{}]. {}", chatMessage, ex.getMessage());
                     throw new KafkaException("Kafka send failed", ex);

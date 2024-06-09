@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long>, CustomChatRoomRepository {
 
-    @Query(value = "select c from ChatRoom c join fetch c.store s join fetch c.box b", countQuery = "select count(c) from ChatRoom c")
+    @Query(value = "select c from ChatRoom c join fetch c.store s join fetch c.box b join fetch c.chatRoomMembers crm", countQuery = "select count(c) from ChatRoom c")
     Page<ChatRoom> findAllChatRoom(Pageable pageable);
 }

@@ -29,7 +29,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonIgnoreProperties({"username", "authorities", "enabled", "accountNonExpired", "accountNonLocked",
-        "credentialsNonExpired", "chatRoom"})
+        "credentialsNonExpired"})
 public class Member extends BaseTimeEntity implements Serializable, UserDetails {
 
     @Id
@@ -57,13 +57,9 @@ public class Member extends BaseTimeEntity implements Serializable, UserDetails 
     @Embedded
     private Address address;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chatroom_id")
-    private ChatRoom chatRoom;
-
     @Builder
     public Member(String loginId, String password, String name, String nickName, String tel, String email,
-                  Address homeAddress) {
+                  Address address) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
@@ -103,16 +99,4 @@ public class Member extends BaseTimeEntity implements Serializable, UserDetails 
         return true;
     }
 
-    public void enterChatRoom(ChatRoom chatRoom) {
-        if (chatRoom.getMembers().contains(this)) {
-            throw new ApiException(ErrorCode.BAD_REQUEST, "이미 입장중인 유저입니다.");
-        }
-        chatRoom.getMembers().add(this);
-        this.chatRoom = chatRoom;
-    }
-
-    public void exitChatRoom() {
-        chatRoom.getMembers().remove(this);
-        this.chatRoom = null;
-    }
 }

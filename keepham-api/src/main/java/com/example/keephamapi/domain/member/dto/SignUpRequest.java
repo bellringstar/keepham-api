@@ -37,7 +37,7 @@ public class SignUpRequest {
                 .nickName(nickName)
                 .tel(tel)
                 .email(email)
-                .homeAddress(address)
+                .address(address)
                 .build();
     }
 

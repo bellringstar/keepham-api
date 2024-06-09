@@ -1,6 +1,5 @@
 package com.example.keephamapi.domain.chatroom.dto;
 
-import com.example.keephamapi.common.entity.BaseTimeEntity;
 import com.example.keephamapi.domain.box.dto.BoxResponse;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
 import com.example.keephamapi.domain.member.dto.MemberResponse;
@@ -55,7 +54,11 @@ public class ChatRoomResponse {
                 .password(chatRoom.getPassword())
                 .store(StoreResponse.toResponse(chatRoom.getStore()))
                 .box(BoxResponse.toResponse(chatRoom.getBox()))
-                .members(chatRoom.getMembers().stream().map(MemberResponse::toResponse).collect(Collectors.toList()))
+                .members(chatRoom.getChatRoomMembers()
+                        .stream()
+                        .map(c -> c.getMember())
+                        .map(MemberResponse::toResponse)
+                        .collect(Collectors.toList()))
                 .createDate(chatRoom.getCreateDate())
                 .modifiedDate(chatRoom.getModifiedDate())
                 .build();
