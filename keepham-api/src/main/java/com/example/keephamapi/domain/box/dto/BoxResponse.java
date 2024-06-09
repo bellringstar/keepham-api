@@ -35,7 +35,6 @@ public class BoxResponse {
                 .address(boxGroup.getAddress())
                 .coordinate(boxGroup.getCoordinate())
                 .status(boxGroup.getStatus())
-                .password(boxGroup.getPassword())
                 .build();
     }
 }

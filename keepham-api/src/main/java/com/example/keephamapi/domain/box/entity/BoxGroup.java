@@ -35,8 +35,8 @@ public class BoxGroup {
     @Enumerated(EnumType.STRING)
     private BoxGroupStatus status;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "box")
-    private ChatRoom chatRoom;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "boxGroup")
+    private List<ChatRoom> chatRooms = new ArrayList<>();
 
     @Embedded
     private Address address;
@@ -44,21 +44,17 @@ public class BoxGroup {
     @Embedded
     private Coordinate coordinate;
 
-    private String password; //box를 열 수 있는 패스워드
-
     @OneToMany(mappedBy = "boxGroup")
     private List<UnitBox> boxes = new ArrayList<>(); //해당 박스에 할당된 작은 박스들
 
     @Builder
-    public BoxGroup(BoxGroupStatus status, ChatRoom chatRoom, Address address, Coordinate coordinate, String password) {
+    public BoxGroup(BoxGroupStatus status, Address address, Coordinate coordinate) {
         this.status = status;
-        this.chatRoom = chatRoom;
         this.address = address;
         this.coordinate = coordinate;
-        this.password = password;
     }
 
-    public void useBox() {
-        this.status = BoxGroupStatus.IN_USE;
+    public void changeBoxGroupStatus(BoxGroupStatus status) {
+        this.status = status;
     }
 }

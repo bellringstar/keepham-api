@@ -16,7 +16,7 @@
 //import com.example.keephamapi.domain.box.dto.BoxResponse;
 //import com.example.keephamapi.domain.box.entity.BoxGroup;
 //import com.example.keephamapi.domain.box.entity.enums.BoxGroupStatus;
-//import com.example.keephamapi.domain.box.service.BoxViewService;
+//import com.example.keephamapi.domain.box.service.UnitBoxViewService;
 //import com.example.keephamapi.domain.chatroom.dto.create.ChatRoomCreateRequest;
 //import com.example.keephamapi.domain.chatroom.dto.create.ChatRoomCreateResponse;
 //import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
@@ -44,7 +44,7 @@
 //    private StoreViewService storeViewService;
 //
 //    @Mock
-//    private BoxViewService boxViewService;
+//    private UnitBoxViewService boxViewService;
 //
 //    @InjectMocks
 //    private ChatRoomService chatRoomService;

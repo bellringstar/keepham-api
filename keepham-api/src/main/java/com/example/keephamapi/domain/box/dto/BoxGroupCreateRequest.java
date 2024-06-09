@@ -14,13 +14,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateBoxRequest {
+public class BoxGroupCreateRequest {
 
     private BoxGroupStatus status;
 
     private Address address;
 
     private Coordinate coordinate;
-
-    private String password; //box를 열 수 있는 패스워드
 }

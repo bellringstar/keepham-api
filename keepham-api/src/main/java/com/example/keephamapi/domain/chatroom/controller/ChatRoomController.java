@@ -2,7 +2,7 @@ package com.example.keephamapi.domain.chatroom.controller;
 
 import com.example.keephamapi.common.api.Api;
 import com.example.keephamapi.domain.box.entity.BoxGroup;
-import com.example.keephamapi.domain.box.service.BoxViewService;
+import com.example.keephamapi.domain.box.service.BoxGroupViewService;
 import com.example.keephamapi.domain.chatroom.dto.create.ChatRoomCreateRequest;
 import com.example.keephamapi.domain.chatroom.dto.create.ChatRoomCreateResponse;
 import com.example.keephamapi.domain.chatroom.dto.ChatRoomResponse;
@@ -36,7 +36,7 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final ChatRoomViewService chatRoomViewService;
     private final MemberViewService memberViewService;
-    private final BoxViewService boxViewService;
+    private final BoxGroupViewService boxGroupViewService;
     private final StoreViewService storeViewService;
 
     @PostMapping
@@ -44,7 +44,7 @@ public class ChatRoomController {
 
         Member member = memberViewService.findMemberByLoginId(auth.getName());
         Store store = storeViewService.findStoreById(request.getStoreId());
-        BoxGroup boxGroup = boxViewService.getAvailableBoxById(request.getBoxId());
+        BoxGroup boxGroup = boxGroupViewService.findAvailableBoxById(request.getBoxId());
 
         ChatRoomCreateResponse response = chatRoomService.createChatRoom(request, member, store, boxGroup);
 

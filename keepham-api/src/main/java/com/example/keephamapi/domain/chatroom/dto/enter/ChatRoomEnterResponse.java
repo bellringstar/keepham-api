@@ -16,6 +16,6 @@ import lombok.Setter;
 public class ChatRoomEnterResponse {
 
     private UnitBox box; //사용자에게 할당된 박스 TODO:dto로 변경 필요
-    private String password; //null 허용
+    private String boxPassword; //null 허용
 
 }

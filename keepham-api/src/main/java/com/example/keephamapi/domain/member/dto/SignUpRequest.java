@@ -2,6 +2,7 @@ package com.example.keephamapi.domain.member.dto;
 
 import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.domain.member.entity.Member;
+import com.example.keephamapi.domain.member.entity.enums.MemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,8 @@ public class SignUpRequest {
 
     private Address address;
 
+    private MemberRole role;
+
     public Member toEntity() {
         return Member.builder()
                 .loginId(loginId)
@@ -38,6 +41,7 @@ public class SignUpRequest {
                 .tel(tel)
                 .email(email)
                 .address(address)
+                .role(role)
                 .build();
     }
 

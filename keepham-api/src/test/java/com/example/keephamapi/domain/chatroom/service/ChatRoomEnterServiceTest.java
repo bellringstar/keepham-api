@@ -63,7 +63,7 @@ class ChatRoomEnterServiceTest {
     @Test
     void enterChatRoom_Success() {
         //given
-        request.setPassword("correct_password");
+        request.setRoomPassword("correct_password");
         when(chatRoomMemberRepository.countChatRoomMemberByChatRoomAndStatus(any(), any()))
                 .thenReturn(3);
 
@@ -84,7 +84,7 @@ class ChatRoomEnterServiceTest {
     @Test
     void enterChatRoom_IncorrectPassword() {
         // given
-        request.setPassword("wrong_password");
+        request.setRoomPassword("wrong_password");
 
         // when & then
         assertThatThrownBy(() -> chatRoomEnterService.enterChatRoom(chatRoom, request, member))
@@ -95,7 +95,7 @@ class ChatRoomEnterServiceTest {
     @Test
     void enterChatRoom_MaxCapacityExceeded() {
         //given
-        request.setPassword("correct_password");
+        request.setRoomPassword("correct_password");
         when(chatRoomMemberRepository.countChatRoomMemberByChatRoomAndStatus(any(), any()))
                 .thenReturn(5);
 
@@ -108,7 +108,7 @@ class ChatRoomEnterServiceTest {
     @Test
     void enterChatRoom_ChatRoomClosed() {
         //given
-        request.setPassword("correct_password");
+        request.setRoomPassword("correct_password");
         chatRoom.closeChatRoom();
         //when && then
         assertThatThrownBy(() -> chatRoomEnterService.enterChatRoom(chatRoom, request, member))
@@ -119,7 +119,7 @@ class ChatRoomEnterServiceTest {
     @Test
     void enterChatRoom_NoAvailableBoxes() {
         // given
-        request.setPassword("correct_password");
+        request.setRoomPassword("correct_password");
         when(chatRoomMemberRepository.countChatRoomMemberByChatRoomAndStatus(any(), any()))
                 .thenReturn(3);
         chatRoom.getBoxGroup().getBoxes().clear();

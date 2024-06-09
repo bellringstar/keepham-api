@@ -1,6 +1,5 @@
 package com.example.keephamapi.domain.chatroom.dto.enter;
 
-import com.example.keephamapi.domain.chatroom.entity.ChatRoomMember;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +14,7 @@ import lombok.Setter;
 public class ChatRoomEnterRequest {
 
     private Long chatRoomId;
-    private String password; //null 허용
+    private String roomPassword; //null 허용
+    private String boxPassword; //TODO: null 허용 4자리수로 제한 필요
 
 }

@@ -25,8 +25,6 @@ public class ChatRoomService {
 
     public ChatRoomCreateResponse createChatRoom(ChatRoomCreateRequest request, Member member, Store store, BoxGroup boxGroup) {
 
-        boxGroup.useBox();
-
         ChatRoom chatRoom = ChatRoom.builder()
                 .title(request.getTitle())
                 .status(ChatRoomStatus.OPEN)
@@ -42,7 +40,7 @@ public class ChatRoomService {
 
         ChatRoomEnterRequest chatRoomEnterRequest = ChatRoomEnterRequest.builder()
                 .chatRoomId(chatRoom.getId())
-                .password(request.getPassword())
+                .roomPassword(request.getPassword())
                 .build();
         // 채팅방 생성한 사람은 자동으로 입장.
         chatRoomEnterService.enterChatRoom(chatRoom, chatRoomEnterRequest, member);

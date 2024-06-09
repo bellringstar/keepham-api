@@ -5,10 +5,13 @@ import com.example.keephamapi.common.entity.BaseTimeEntity;
 import com.example.keephamapi.common.error.ErrorCode;
 import com.example.keephamapi.common.exception.ApiException;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
+import com.example.keephamapi.domain.member.entity.enums.MemberRole;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,6 +26,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -57,9 +61,13 @@ public class Member extends BaseTimeEntity implements Serializable, UserDetails 
     @Embedded
     private Address address;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
+
     @Builder
     public Member(String loginId, String password, String name, String nickName, String tel, String email,
-                  Address address) {
+                  Address address, MemberRole role) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
@@ -67,11 +75,12 @@ public class Member extends BaseTimeEntity implements Serializable, UserDetails 
         this.tel = tel;
         this.email = email;
         this.address = address;
+        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

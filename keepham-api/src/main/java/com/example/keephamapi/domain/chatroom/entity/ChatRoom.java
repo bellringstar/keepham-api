@@ -12,6 +12,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
@@ -50,7 +52,8 @@ public class ChatRoom extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private Store store; //해당 채팅방에 연결된 가게
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "box_group_id")
     private BoxGroup boxGroup; //해당 채팅방에 연동된 box
 
     @OneToMany(mappedBy = "chatRoom")
@@ -68,6 +71,7 @@ public class ChatRoom extends BaseTimeEntity {
         this.closedDate = closedDate;
         this.store = store;
         this.boxGroup = boxGroup;
+        boxGroup.getChatRooms().add(this);
     }
 
     public void closeChatRoom() {

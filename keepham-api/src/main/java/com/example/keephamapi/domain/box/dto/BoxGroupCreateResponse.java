@@ -17,7 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class CreateBoxResponse {
+public class BoxGroupCreateResponse {
 
     private BoxGroupStatus status;
 
@@ -27,12 +27,11 @@ public class CreateBoxResponse {
 
     private String password; //box를 열 수 있는 패스워드
 
-    public static CreateBoxResponse toResponse(BoxGroup boxGroup) {
-        return CreateBoxResponse.builder()
+    public static BoxGroupCreateResponse toResponse(BoxGroup boxGroup) {
+        return BoxGroupCreateResponse.builder()
                 .address(boxGroup.getAddress())
                 .coordinate(boxGroup.getCoordinate())
                 .status(boxGroup.getStatus())
-                .password(boxGroup.getPassword())
                 .build();
     }
 }

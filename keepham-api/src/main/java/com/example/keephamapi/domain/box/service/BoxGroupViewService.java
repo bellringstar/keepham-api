@@ -13,18 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
-public class BoxViewService {
+@Transactional(readOnly = true)
+public class BoxGroupViewService {
 
     private final BoxGroupRepository boxGroupRepository;
 
-    public BoxGroup getAvailableBoxById(Long id) {
-        BoxGroup boxGroup =  boxGroupRepository.findById(id)
-                .orElseThrow(() -> new ApiException(ErrorCode.BAD_REQUEST, "존재하지 않는 박스"));
-        if (boxGroup.getStatus().equals(BoxGroupStatus.AVAILABLE)) {
-            return boxGroup;
-        }
-
-        throw new ApiException(ErrorCode.BAD_REQUEST, "사용할 수 없는 박스");
+    public BoxGroup findAvailableBoxById(Long boxGroupId) {
+        return boxGroupRepository.findBoxGroupByIdAndStatus(boxGroupId, BoxGroupStatus.AVAILABLE)
+                .orElseThrow(() -> new ApiException(ErrorCode.BAD_REQUEST, "이용 가능한 박스 그룹이 없습니다."));
     }
+
+    //박스 그룹 전체 검색
+
+    //박스 그룹 조건 검색 -> queryDSL
+
 }
