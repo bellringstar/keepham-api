@@ -1,4 +1,4 @@
-package com.example.keephamapi.domain.chatroom.dto;
+package com.example.keephamapi.domain.chatroom.dto.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

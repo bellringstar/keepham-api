@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import com.example.keephamapi.domain.box.entity.Box;
-import com.example.keephamapi.domain.box.entity.enums.BoxStatus;
+import com.example.keephamapi.domain.box.entity.BoxGroup;
+import com.example.keephamapi.domain.box.entity.enums.BoxGroupStatus;
 import com.example.keephamapi.domain.chatroom.dto.ChatRoomResponse;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
 import com.example.keephamapi.domain.chatroom.entity.enums.ChatRoomStatus;
@@ -38,8 +38,8 @@ public class ChatRoomViewServiceTest {
                 .name("Test Store")
                 .build();
 
-        Box box = Box.builder()
-                .status(BoxStatus.AVAILABLE)
+        BoxGroup boxGroup = BoxGroup.builder()
+                .status(BoxGroupStatus.AVAILABLE)
                 .build();
 
         ChatRoom chatRoom = ChatRoom.builder()
@@ -50,7 +50,7 @@ public class ChatRoomViewServiceTest {
                 .locked(false)
                 .password("password")
                 .store(store)
-                .box(box)
+                .box(boxGroup)
                 .build();
 
         Page<ChatRoom> chatRoomPage = new PageImpl<>(Collections.singletonList(chatRoom));

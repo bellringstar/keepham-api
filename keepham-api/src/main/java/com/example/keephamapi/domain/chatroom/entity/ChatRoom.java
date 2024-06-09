@@ -1,7 +1,7 @@
 package com.example.keephamapi.domain.chatroom.entity;
 
 import com.example.keephamapi.common.entity.BaseTimeEntity;
-import com.example.keephamapi.domain.box.entity.Box;
+import com.example.keephamapi.domain.box.entity.BoxGroup;
 import com.example.keephamapi.domain.chatroom.entity.enums.ChatRoomStatus;
 import com.example.keephamapi.domain.store.entity.Store;
 import jakarta.persistence.Column;
@@ -51,14 +51,14 @@ public class ChatRoom extends BaseTimeEntity {
     private Store store; //해당 채팅방에 연결된 가게
 
     @OneToOne(fetch = FetchType.LAZY)
-    private Box box; //해당 채팅방에 연동된 box
+    private BoxGroup boxGroup; //해당 채팅방에 연동된 box
 
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatRoomMember> chatRoomMembers = new ArrayList<>();
 
     @Builder
     public ChatRoom(String title, ChatRoomStatus status, Integer maxPeople, String superUserId, boolean locked,
-                    String password, LocalDateTime closedDate, Store store, Box box) {
+                    String password, LocalDateTime closedDate, Store store, BoxGroup boxGroup) {
         this.title = title;
         this.status = status;
         this.maxPeople = maxPeople;
@@ -67,6 +67,6 @@ public class ChatRoom extends BaseTimeEntity {
         this.password = password;
         this.closedDate = closedDate;
         this.store = store;
-        this.box = box;
+        this.boxGroup = boxGroup;
     }
 }

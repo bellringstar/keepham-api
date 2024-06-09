@@ -1,10 +1,10 @@
 package com.example.keephamapi.domain.chatroom.controller;
 
 import com.example.keephamapi.common.api.Api;
-import com.example.keephamapi.domain.box.entity.Box;
+import com.example.keephamapi.domain.box.entity.BoxGroup;
 import com.example.keephamapi.domain.box.service.BoxViewService;
-import com.example.keephamapi.domain.chatroom.dto.ChatRoomCreateRequest;
-import com.example.keephamapi.domain.chatroom.dto.ChatRoomCreateResponse;
+import com.example.keephamapi.domain.chatroom.dto.create.ChatRoomCreateRequest;
+import com.example.keephamapi.domain.chatroom.dto.create.ChatRoomCreateResponse;
 import com.example.keephamapi.domain.chatroom.dto.ChatRoomResponse;
 import com.example.keephamapi.domain.chatroom.dto.ChatRoomSearchCond;
 import com.example.keephamapi.domain.chatroom.service.ChatRoomService;
@@ -18,11 +18,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,9 +44,9 @@ public class ChatRoomController {
 
         Member member = memberViewService.findMemberByLoginId(auth.getName());
         Store store = storeViewService.findStoreById(request.getStoreId());
-        Box box = boxViewService.getAvailableBoxById(request.getBoxId());
+        BoxGroup boxGroup = boxViewService.getAvailableBoxById(request.getBoxId());
 
-        ChatRoomCreateResponse response = chatRoomService.createChatRoom(request, member, store, box);
+        ChatRoomCreateResponse response = chatRoomService.createChatRoom(request, member, store, boxGroup);
 
         return Api.OK(response);
     }

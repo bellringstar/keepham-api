@@ -53,7 +53,7 @@ public class ChatRoomResponse {
                 .locked(chatRoom.isLocked())
                 .password(chatRoom.getPassword())
                 .store(StoreResponse.toResponse(chatRoom.getStore()))
-                .box(BoxResponse.toResponse(chatRoom.getBox()))
+                .box(BoxResponse.toResponse(chatRoom.getBoxGroup()))
                 .members(chatRoom.getChatRoomMembers()
                         .stream()
                         .map(c -> c.getMember())

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum BoxStatus {
+public enum BoxGroupStatus {
 
     AVAILABLE("이용 가능"),
     UNAVAILABLE("고장"),

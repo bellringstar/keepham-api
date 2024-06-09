@@ -9,9 +9,9 @@ import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.common.entity.Coordinate;
 import com.example.keephamapi.common.error.ErrorCode;
 import com.example.keephamapi.common.exception.ApiException;
-import com.example.keephamapi.domain.box.entity.Box;
-import com.example.keephamapi.domain.box.entity.enums.BoxStatus;
-import com.example.keephamapi.domain.box.repository.BoxRepository;
+import com.example.keephamapi.domain.box.entity.BoxGroup;
+import com.example.keephamapi.domain.box.entity.enums.BoxGroupStatus;
+import com.example.keephamapi.domain.box.repository.BoxGroupRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +19,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class BoxViewServiceTest {
+class BoxGroupViewServiceTest {
     @Mock
-    private BoxRepository boxRepository;
+    private BoxGroupRepository boxGroupRepository;
 
     @InjectMocks
     private BoxViewService boxViewService;
@@ -35,35 +35,35 @@ class BoxViewServiceTest {
     public void getAvailableBoxById_shouldReturnBoxIfAvailable() {
         // Given
         Long boxId = 1L;
-        Box box = Box.builder()
-                .status(BoxStatus.AVAILABLE)
+        BoxGroup boxGroup = BoxGroup.builder()
+                .status(BoxGroupStatus.AVAILABLE)
                 .address(new Address("Street", "City", "Zip"))
                 .coordinate(new Coordinate(0.0, 0.0))
                 .password("password")
                 .build();
-        when(boxRepository.findById(boxId)).thenReturn(Optional.of(box));
+        when(boxGroupRepository.findById(boxId)).thenReturn(Optional.of(boxGroup));
 
         // When
-        Box result = boxViewService.getAvailableBoxById(boxId);
+        BoxGroup result = boxViewService.getAvailableBoxById(boxId);
 
         // Then
         assertThat(result).isNotNull();
-        assertThat(result.getStatus()).isEqualTo(BoxStatus.AVAILABLE);
+        assertThat(result.getStatus()).isEqualTo(BoxGroupStatus.AVAILABLE);
 
-        verify(boxRepository, times(1)).findById(boxId);
+        verify(boxGroupRepository, times(1)).findById(boxId);
     }
 
     @Test
     public void getAvailableBoxById_shouldThrowExceptionIfNotAvailable() {
         // Given
         Long boxId = 1L;
-        Box box = Box.builder()
-                .status(BoxStatus.IN_USE)
+        BoxGroup boxGroup = BoxGroup.builder()
+                .status(BoxGroupStatus.IN_USE)
                 .address(new Address("Street", "City", "Zip"))
                 .coordinate(new Coordinate(0.0, 0.0))
                 .password("password")
                 .build();
-        when(boxRepository.findById(boxId)).thenReturn(Optional.of(box));
+        when(boxGroupRepository.findById(boxId)).thenReturn(Optional.of(boxGroup));
 
         // When
         ApiException exception = catchThrowableOfType(() -> {
@@ -75,14 +75,14 @@ class BoxViewServiceTest {
         assertThat(exception.getErrorCodeIfs()).isEqualTo(ErrorCode.BAD_REQUEST);
         assertThat(exception.getMessage()).isEqualTo("사용할 수 없는 박스");
 
-        verify(boxRepository, times(1)).findById(boxId);
+        verify(boxGroupRepository, times(1)).findById(boxId);
     }
 
     @Test
     public void getAvailableBoxById_shouldThrowExceptionIfBoxNotFound() {
         // Given
         Long boxId = 1L;
-        when(boxRepository.findById(boxId)).thenReturn(Optional.empty());
+        when(boxGroupRepository.findById(boxId)).thenReturn(Optional.empty());
 
         // When
         ApiException exception = catchThrowableOfType(() -> {
@@ -94,6 +94,6 @@ class BoxViewServiceTest {
         assertThat(exception.getErrorCodeIfs()).isEqualTo(ErrorCode.BAD_REQUEST);
         assertThat(exception.getMessage()).isEqualTo("존재하지 않는 박스");
 
-        verify(boxRepository, times(1)).findById(boxId);
+        verify(boxGroupRepository, times(1)).findById(boxId);
     }
 }

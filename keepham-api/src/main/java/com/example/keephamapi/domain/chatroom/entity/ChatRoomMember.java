@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -45,6 +44,7 @@ public class ChatRoomMember {
     public ChatRoomMember(ChatRoom chatRoom, Member member, LocalDateTime enterDate, LocalDateTime exitDate,
                           ChatRoomMemberStatus status) {
         this.chatRoom = chatRoom;
+        chatRoom.getChatRoomMembers().add(this);
         this.member = member;
         this.enterDate = enterDate;
         this.exitDate = exitDate;

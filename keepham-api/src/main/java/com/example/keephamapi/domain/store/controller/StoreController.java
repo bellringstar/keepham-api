@@ -1,9 +1,6 @@
 package com.example.keephamapi.domain.store.controller;
 
 import com.example.keephamapi.common.api.Api;
-import com.example.keephamapi.domain.chatroom.dto.ChatRoomCreateRequest;
-import com.example.keephamapi.domain.chatroom.dto.ChatRoomCreateResponse;
-import com.example.keephamapi.domain.chatroom.service.ChatRoomService;
 import com.example.keephamapi.domain.store.dto.StoreCreateRequest;
 import com.example.keephamapi.domain.store.dto.StoreCreateResponse;
 import com.example.keephamapi.domain.store.service.StoreService;

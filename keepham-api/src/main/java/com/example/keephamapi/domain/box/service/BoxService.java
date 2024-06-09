@@ -2,8 +2,8 @@ package com.example.keephamapi.domain.box.service;
 
 import com.example.keephamapi.domain.box.dto.CreateBoxRequest;
 import com.example.keephamapi.domain.box.dto.CreateBoxResponse;
-import com.example.keephamapi.domain.box.entity.Box;
-import com.example.keephamapi.domain.box.repository.BoxRepository;
+import com.example.keephamapi.domain.box.entity.BoxGroup;
+import com.example.keephamapi.domain.box.repository.BoxGroupRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BoxService {
 
-    private final BoxRepository boxRepository;
+    private final BoxGroupRepository boxGroupRepository;
 
     public CreateBoxResponse createBox(CreateBoxRequest request) {
 
-        Box box = Box.builder()
+        BoxGroup boxGroup = BoxGroup.builder()
                 .address(request.getAddress())
                 .coordinate(request.getCoordinate())
                 .status(request.getStatus())
@@ -27,8 +27,8 @@ public class BoxService {
                 .password(request.getPassword())
                 .build();
 
-        boxRepository.save(box);
+        boxGroupRepository.save(boxGroup);
 
-        return CreateBoxResponse.toResponse(box);
+        return CreateBoxResponse.toResponse(boxGroup);
     }
 }

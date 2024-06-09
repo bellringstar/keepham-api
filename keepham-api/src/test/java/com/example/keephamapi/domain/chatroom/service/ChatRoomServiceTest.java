@@ -2,7 +2,6 @@ package com.example.keephamapi.domain.chatroom.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.anyString;
@@ -15,12 +14,11 @@ import com.example.keephamapi.common.entity.Coordinate;
 import com.example.keephamapi.common.error.ErrorCode;
 import com.example.keephamapi.common.exception.ApiException;
 import com.example.keephamapi.domain.box.dto.BoxResponse;
-import com.example.keephamapi.domain.box.entity.Box;
-import com.example.keephamapi.domain.box.entity.enums.BoxStatus;
+import com.example.keephamapi.domain.box.entity.BoxGroup;
+import com.example.keephamapi.domain.box.entity.enums.BoxGroupStatus;
 import com.example.keephamapi.domain.box.service.BoxViewService;
-import com.example.keephamapi.domain.chatroom.dto.ChatRoomCreateRequest;
-import com.example.keephamapi.domain.chatroom.dto.ChatRoomCreateResponse;
-import com.example.keephamapi.domain.chatroom.dto.ChatRoomResponse;
+import com.example.keephamapi.domain.chatroom.dto.create.ChatRoomCreateRequest;
+import com.example.keephamapi.domain.chatroom.dto.create.ChatRoomCreateResponse;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
 import com.example.keephamapi.domain.chatroom.repository.ChatRoomRepository;
 import com.example.keephamapi.domain.member.entity.Member;
@@ -28,18 +26,11 @@ import com.example.keephamapi.domain.member.service.MemberViewService;
 import com.example.keephamapi.domain.store.dto.StoreResponse;
 import com.example.keephamapi.domain.store.entity.Store;
 import com.example.keephamapi.domain.store.service.StoreViewService;
-import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 public class ChatRoomServiceTest {
 
@@ -81,15 +72,15 @@ public class ChatRoomServiceTest {
                 .address(new Address("Street", "City", "Zip"))
                 .coordinate(new Coordinate(0.0, 0.0))
                 .build();
-        Box box = Box.builder()
-                .status(BoxStatus.AVAILABLE)
+        BoxGroup boxGroup = BoxGroup.builder()
+                .status(BoxGroupStatus.AVAILABLE)
                 .address(new Address("Street", "City", "Zip"))
                 .coordinate(new Coordinate(0.0, 0.0))
                 .build();
 
         when(memberViewService.findMemberByLoginId(anyString())).thenReturn(member);
         when(storeViewService.findStoreById(anyLong())).thenReturn(store);
-        when(boxViewService.getAvailableBoxById(anyLong())).thenReturn(box);
+        when(boxViewService.getAvailableBoxById(anyLong())).thenReturn(boxGroup);
 
         // When
         ChatRoomCreateResponse response = chatRoomService.createChatRoom(request, "loginId");
@@ -102,7 +93,7 @@ public class ChatRoomServiceTest {
         assertThat(response.isLocked()).isEqualTo(request.isLocked());
         assertThat(response.getPassword()).isEqualTo(request.getPassword());
         assertThat(response.getStore()).isEqualTo(StoreResponse.toResponse(store));
-        assertThat(response.getBox()).isEqualTo(BoxResponse.toResponse(box));
+        assertThat(response.getBox()).isEqualTo(BoxResponse.toResponse(boxGroup));
 
         verify(memberViewService, times(1)).findMemberByLoginId(anyString());
         verify(storeViewService, times(1)).findStoreById(anyLong());
@@ -234,8 +225,8 @@ public class ChatRoomServiceTest {
                 .address(new Address("Street", "City", "Zip"))
                 .coordinate(new Coordinate(0.0, 0.0))
                 .build();
-        Box box = Box.builder()
-                .status(BoxStatus.IN_USE)
+        BoxGroup boxGroup = BoxGroup.builder()
+                .status(BoxGroupStatus.IN_USE)
                 .address(new Address("Street", "City", "Zip"))
                 .coordinate(new Coordinate(0.0, 0.0))
                 .build();
