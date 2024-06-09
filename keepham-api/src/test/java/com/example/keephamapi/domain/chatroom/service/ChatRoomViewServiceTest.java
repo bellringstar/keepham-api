@@ -50,7 +50,7 @@ public class ChatRoomViewServiceTest {
                 .locked(false)
                 .password("password")
                 .store(store)
-                .box(boxGroup)
+                .boxGroup(boxGroup)
                 .build();
 
         Page<ChatRoom> chatRoomPage = new PageImpl<>(Collections.singletonList(chatRoom));

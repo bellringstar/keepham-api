@@ -35,7 +35,7 @@ public class ChatRoomService {
                 .locked(request.isLocked())
                 .password(request.getPassword())
                 .store(store)
-                .box(boxGroup)
+                .boxGroup(boxGroup)
                 .build();
 
         chatRoomRepository.save(chatRoom);

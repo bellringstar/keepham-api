@@ -69,4 +69,9 @@ public class ChatRoom extends BaseTimeEntity {
         this.store = store;
         this.boxGroup = boxGroup;
     }
+
+    public void closeChatRoom() {
+        this.status = ChatRoomStatus.CLOSD;
+        //todo: chatroomMembers가 남아있으면 종료 못하게 해야한다.?
+    }
 }

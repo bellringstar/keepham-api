@@ -19,8 +19,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,6 +52,7 @@ public class UnitBox {
     @JoinColumn(name = "box_group_id")
     private BoxGroup boxGroup; //박스가 속해있는 그룹
 
+    @Builder
     public UnitBox(UnitBoxStatus status, Member member, Long boxNumber, String password, BoxGroup boxGroup) {
         this.status = status;
         this.member = member;
@@ -61,6 +64,19 @@ public class UnitBox {
     public void assignBoxToMember(Member member) {
         this.member = member;
         this.status = UnitBoxStatus.IN_USE;
-        this.password = "password"; //TODO: 패스워드 자동 생성 후 리턴 필요.
+        this.password = generateRandomPassword();
+    }
+
+    public void assignBoxToMember(Member member, String password) {
+        this.member = member;
+        this.status = UnitBoxStatus.IN_USE;
+        this.password = password;
+    }
+
+
+    private String generateRandomPassword() {
+        SecureRandom random = new SecureRandom ();
+        int randomNumber = 1000 + random.nextInt(9000);
+        return String.valueOf(randomNumber);
     }
 }

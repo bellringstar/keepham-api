@@ -1,10 +1,8 @@
 package com.example.keephamapi.domain.chatroom.repository.querydsl;
 
-import static com.example.keephamapi.domain.box.entity.QBox.box;
 import static com.example.keephamapi.domain.chatroom.entity.QChatRoom.chatRoom;
 import static com.example.keephamapi.domain.store.entity.QStore.store;
 
-import com.example.keephamapi.domain.chatroom.dto.ChatRoomResponse;
 import com.example.keephamapi.domain.chatroom.dto.ChatRoomSearchCond;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -34,7 +32,7 @@ public class CustomChatRoomRepositoryImpl implements
                 .selectFrom(chatRoom)
                 .leftJoin(chatRoom.store, store)
                 .fetchJoin()
-                .leftJoin(chatRoom.box, box)
+//                .leftJoin(chatRoom.box, box)
                 .fetchJoin()
                 .where(chatRoomTitleEq(chatRoomSearchCond.getTitle()),
                         storeNameEq(chatRoomSearchCond.getStoreName()))
@@ -42,12 +40,11 @@ public class CustomChatRoomRepositoryImpl implements
                 .limit(pageable.getPageSize())
                 .fetch();
 
-
         long total = queryFactory
                 .select(chatRoom.count())
                 .from(chatRoom)
                 .leftJoin(chatRoom.store, store)
-                .leftJoin(chatRoom.box, box)
+//                .leftJoin(chatRoom.box, box)
                 .where(chatRoomTitleEq(chatRoomSearchCond.getTitle()),
                         storeNameEq(chatRoomSearchCond.getStoreName()))
                 .fetchOne();
