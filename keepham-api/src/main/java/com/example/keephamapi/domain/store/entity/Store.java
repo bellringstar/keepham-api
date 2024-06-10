@@ -13,7 +13,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +27,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Store {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
     private Long id;
 
@@ -36,9 +40,7 @@ public class Store {
     @Embedded
     private Address address;
 
-    private Long minOrderAmount;
-
-    private Long deliveryFeeToDisplay;
+    private Long minOrderPrice;
 
     private String logoUrl;
 
@@ -47,20 +49,35 @@ public class Store {
     @Embedded
     private Coordinate coordinate;
 
+    // 테이블에는 없지만 관리를 위한 양방향 연결
+    @OneToMany(mappedBy = "store", orphanRemoval = true)
+    private List<MenuCategory> menuCategory = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store", orphanRemoval = true)
+    private List<DeliveryFee> deliveryFees = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store", orphanRemoval = true)
+    private List<Menu> menus = new ArrayList<>();
+
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "store")
     private ChatRoom chatRoom;
 
     @Builder
-    public Store(Category category, String name, Address address, Long minOrderAmount, Long deliveryFeeToDisplay,
-                 String logoUrl, String thumbnailUrl, Coordinate coordinate, ChatRoom chatRoom) {
+    public Store(Category category, String name, Address address, Long minOrderPrice, String logoUrl,
+                 String thumbnailUrl,
+                 Coordinate coordinate, List<MenuCategory> menuCategory, List<DeliveryFee> deliveryFees,
+                 List<Menu> menus,
+                 ChatRoom chatRoom) {
         this.category = category;
         this.name = name;
         this.address = address;
-        this.minOrderAmount = minOrderAmount;
-        this.deliveryFeeToDisplay = deliveryFeeToDisplay;
+        this.minOrderPrice = minOrderPrice;
         this.logoUrl = logoUrl;
         this.thumbnailUrl = thumbnailUrl;
         this.coordinate = coordinate;
+        this.menuCategory = menuCategory;
+        this.deliveryFees = deliveryFees;
+        this.menus = menus;
         this.chatRoom = chatRoom;
     }
 }
