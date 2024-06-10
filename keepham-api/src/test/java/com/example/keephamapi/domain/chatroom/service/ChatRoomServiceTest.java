@@ -23,7 +23,7 @@
 //import com.example.keephamapi.domain.chatroom.repository.ChatRoomRepository;
 //import com.example.keephamapi.domain.member.entity.Member;
 //import com.example.keephamapi.domain.member.service.MemberViewService;
-//import com.example.keephamapi.domain.store.dto.StoreResponse;
+//import com.example.keephamapi.domain.store.dto.store.StoreResponse;
 //import com.example.keephamapi.domain.store.entity.Store;
 //import com.example.keephamapi.domain.store.service.StoreViewService;
 //import org.junit.jupiter.api.BeforeEach;

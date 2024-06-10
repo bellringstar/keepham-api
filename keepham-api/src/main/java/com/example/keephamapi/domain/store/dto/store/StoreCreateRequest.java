@@ -1,7 +1,8 @@
-package com.example.keephamapi.domain.store.dto;
+package com.example.keephamapi.domain.store.dto.store;
 
 import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.common.entity.Coordinate;
+import com.example.keephamapi.domain.store.dto.businesscert.BusinessCertRequest;
 import com.example.keephamapi.domain.store.entity.Store;
 import com.example.keephamapi.domain.store.entity.enums.Category;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,8 @@ public class StoreCreateRequest {
     private String thumbnailUrl;
 
     private Coordinate coordinate;
+
+    private BusinessCertRequest businessCertRequest;
 
     public static Store toEntity(StoreCreateRequest request) {
         return Store.builder()

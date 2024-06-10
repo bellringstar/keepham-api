@@ -2,7 +2,7 @@ package com.example.keephamapi.domain.chatroom.dto.create;
 
 import com.example.keephamapi.domain.box.dto.BoxResponse;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
-import com.example.keephamapi.domain.store.dto.StoreResponse;
+import com.example.keephamapi.domain.store.dto.store.StoreResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -40,7 +40,7 @@ public class ChatRoomCreateResponse {
                 .superUserId(chatRoom.getSuperUserId())
                 .locked(chatRoom.isLocked())
                 .password(chatRoom.getPassword())
-                .store(StoreResponse.toResponse(chatRoom.getStore()))
+//                .store(StoreResponse.toResponse(chatRoom.getStore()))
                 .box(BoxResponse.toResponse(chatRoom.getBoxGroup()))
                 .build();
     }

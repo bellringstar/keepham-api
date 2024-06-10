@@ -26,14 +26,14 @@ public class BusinessCert {
 
     private String businessNumber; //숫자로 이루어진 10자리값
     private String representativeName; //외국인 사업자의 경우 영문명
-    private LocalDate openingDate; //YYYYMMDD 포맷으로 국세청api로 요청해야 하는 값
+    private String openingDate; //YYYYMMDD 포맷으로 국세청api로 요청해야 하는 값
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
 
     @Builder
-    public BusinessCert(String businessNumber, String representativeName, LocalDate openingDate, Store store) {
+    public BusinessCert(String businessNumber, String representativeName, String openingDate, Store store) {
         this.businessNumber = businessNumber;
         this.representativeName = representativeName;
         this.openingDate = openingDate;

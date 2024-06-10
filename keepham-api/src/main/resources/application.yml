@@ -22,3 +22,8 @@ logging:
     org.hibernate.sql: debug
     org.hibernate.type: trace
 
+---
+nts:
+  api:
+    url: https://api.odcloud.kr/api/nts-businessman/v1
+    key: test

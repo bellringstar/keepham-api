@@ -3,7 +3,7 @@ package com.example.keephamapi.domain.chatroom.dto;
 import com.example.keephamapi.domain.box.dto.BoxResponse;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
 import com.example.keephamapi.domain.member.dto.MemberResponse;
-import com.example.keephamapi.domain.store.dto.StoreResponse;
+import com.example.keephamapi.domain.store.dto.store.StoreResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,7 +52,7 @@ public class ChatRoomResponse {
                 .superUserId(chatRoom.getSuperUserId())
                 .locked(chatRoom.isLocked())
                 .password(chatRoom.getPassword())
-                .store(StoreResponse.toResponse(chatRoom.getStore()))
+//                .store(StoreResponse.toResponse(chatRoom.getStore()))
                 .box(BoxResponse.toResponse(chatRoom.getBoxGroup()))
                 .members(chatRoom.getChatRoomMembers()
                         .stream()

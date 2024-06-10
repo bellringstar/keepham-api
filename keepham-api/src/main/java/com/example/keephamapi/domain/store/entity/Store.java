@@ -4,6 +4,7 @@ import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.common.entity.Coordinate;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
 import com.example.keephamapi.domain.store.entity.enums.Category;
+import com.example.keephamapi.domain.store.entity.enums.StoreStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -19,12 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(exclude = {"menuCategory", "deliveryFees", "menus", "chatRoom"})
+@ToString(exclude = {"menuCategory", "deliveryFees", "menus", "chatRoom"})
 public class Store {
 
     @Id
@@ -34,6 +39,9 @@ public class Store {
 
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @Enumerated(EnumType.STRING)
+    private StoreStatus storeStatus;
 
     private String name;
 
@@ -63,21 +71,15 @@ public class Store {
     private ChatRoom chatRoom;
 
     @Builder
-    public Store(Category category, String name, Address address, Long minOrderPrice, String logoUrl,
-                 String thumbnailUrl,
-                 Coordinate coordinate, List<MenuCategory> menuCategory, List<DeliveryFee> deliveryFees,
-                 List<Menu> menus,
-                 ChatRoom chatRoom) {
+    public Store(Category category, StoreStatus storeStatus, String name, Address address, Long minOrderPrice,
+                 String logoUrl, String thumbnailUrl, Coordinate coordinate) {
         this.category = category;
+        this.storeStatus = storeStatus;
         this.name = name;
         this.address = address;
         this.minOrderPrice = minOrderPrice;
         this.logoUrl = logoUrl;
         this.thumbnailUrl = thumbnailUrl;
         this.coordinate = coordinate;
-        this.menuCategory = menuCategory;
-        this.deliveryFees = deliveryFees;
-        this.menus = menus;
-        this.chatRoom = chatRoom;
     }
 }

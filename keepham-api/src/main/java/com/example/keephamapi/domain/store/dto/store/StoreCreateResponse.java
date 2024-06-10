@@ -1,4 +1,4 @@
-package com.example.keephamapi.domain.store.dto;
+package com.example.keephamapi.domain.store.dto.store;
 
 import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.common.entity.Coordinate;
@@ -29,13 +29,16 @@ public class StoreCreateResponse {
 
     private Address address;
 
-    private Long minOrderAmount;
-
-    private String logoUrl;
-
-    private String thumbnailUrl;
-
     @Embedded
     private Coordinate coordinate;
 
+    public static StoreCreateResponse toResponse(Store store) {
+        return StoreCreateResponse.builder()
+                .category(store.getCategory())
+                .storeStatus(store.getStoreStatus())
+                .name(store.getName())
+                .address(store.getAddress())
+                .coordinate(store.getCoordinate())
+                .build();
+    }
 }

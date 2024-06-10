@@ -1,4 +1,4 @@
-package com.example.keephamapi.domain.store.dto;
+package com.example.keephamapi.domain.store.dto.store;
 
 import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.common.entity.Coordinate;
