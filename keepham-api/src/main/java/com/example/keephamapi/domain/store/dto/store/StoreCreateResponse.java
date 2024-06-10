@@ -4,6 +4,7 @@ import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.common.entity.Coordinate;
 import com.example.keephamapi.domain.store.entity.Store;
 import com.example.keephamapi.domain.store.entity.enums.Category;
+import com.example.keephamapi.domain.store.entity.enums.StoreStatus;
 import jakarta.persistence.Embedded;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,19 +19,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class StoreResponse {
-
-    private Long id;
+public class StoreCreateResponse {
 
     private Category category;
+
+    private StoreStatus storeStatus;
 
     private String name;
 
     private Address address;
 
     private Long minOrderAmount;
-
-    private Long deliveryFeeToDisplay;
 
     private String logoUrl;
 
@@ -39,17 +38,4 @@ public class StoreResponse {
     @Embedded
     private Coordinate coordinate;
 
-    public static StoreResponse toResponse(Store store) {
-        return StoreResponse.builder()
-                .id(store.getId())
-                .name(store.getName())
-                .category(store.getCategory())
-                .address(store.getAddress())
-                .minOrderAmount(store.getMinOrderAmount())
-                .deliveryFeeToDisplay(store.getDeliveryFeeToDisplay())
-                .logoUrl(store.getLogoUrl())
-                .thumbnailUrl(store.getThumbnailUrl())
-                .coordinate(store.getCoordinate())
-                .build();
-    }
 }

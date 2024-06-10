@@ -7,6 +7,7 @@ import com.example.keephamapi.domain.store.entity.enums.Category;
 import jakarta.persistence.Embedded;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +17,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StoreCreateRequest {
+@EqualsAndHashCode
+public class StoreResponse {
+
+    private Long id;
 
     private Category category;
 
@@ -34,5 +38,4 @@ public class StoreCreateRequest {
 
     @Embedded
     private Coordinate coordinate;
-
 }
