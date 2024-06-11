@@ -15,7 +15,7 @@ public class Result {
 
     private Integer resultCode;
     private String resultMessage;
-    private String resultDescription;
+    private Object resultDescription;
 
     public static Result OK() {
         return Result.builder()
@@ -41,7 +41,7 @@ public class Result {
                 .build();
     }
 
-    public static Result ERROR(ErrorCodeIfs errorCodeIfs, String description) {
+    public static Result ERROR(ErrorCodeIfs errorCodeIfs, Object description) {
         return Result.builder()
                 .resultCode(errorCodeIfs.getErrorCode())
                 .resultMessage(errorCodeIfs.getDescription())

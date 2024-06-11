@@ -5,13 +5,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum StoreStatus {
+public enum StoreOpenStatus {
 
-    PENDING_APPROVAL("승인 대기"),
-    APPROVAL("승인"),
-    DECLINED("승인 거절"),
-    PENDING_DELETE("삭제 대기"),
-    DELETED("삭제");
+    OPEN("영업중"),
+    CLOSE("영업 종료");
 
     private final String description;
 }

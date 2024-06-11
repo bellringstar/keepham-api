@@ -4,6 +4,7 @@ import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.common.entity.Coordinate;
 import com.example.keephamapi.domain.chatroom.entity.ChatRoom;
 import com.example.keephamapi.domain.store.entity.enums.Category;
+import com.example.keephamapi.domain.store.entity.enums.StoreOpenStatus;
 import com.example.keephamapi.domain.store.entity.enums.StoreStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -43,6 +44,9 @@ public class Store {
     @Enumerated(EnumType.STRING)
     private StoreStatus storeStatus;
 
+    @Enumerated(EnumType.STRING)
+    private StoreOpenStatus openStatus;
+
     private String name;
 
     @Embedded
@@ -50,6 +54,7 @@ public class Store {
 
     private Long minOrderPrice;
 
+    //TODO: 이미지 파일 업로드 기능, 썸네일 생성 후 url 저장 추가
     private String logoUrl;
 
     private String thumbnailUrl;
@@ -67,8 +72,11 @@ public class Store {
     @OneToMany(mappedBy = "store", orphanRemoval = true)
     private List<Menu> menus = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<ChatRoom> chatRooms = new ArrayList<>();
+
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "store")
-    private ChatRoom chatRoom;
+    private BusinessCert businessCert;
 
     @Builder
     public Store(Category category, StoreStatus storeStatus, String name, Address address, Long minOrderPrice,
@@ -82,4 +90,9 @@ public class Store {
         this.thumbnailUrl = thumbnailUrl;
         this.coordinate = coordinate;
     }
+
+    public void deleteStore() {
+        this.storeStatus = StoreStatus.PENDING_DELETE;
+    }
+
 }

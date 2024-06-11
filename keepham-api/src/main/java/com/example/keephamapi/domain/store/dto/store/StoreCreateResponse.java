@@ -21,6 +21,8 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class StoreCreateResponse {
 
+    private Long id;
+
     private Category category;
 
     private StoreStatus storeStatus;
@@ -34,6 +36,7 @@ public class StoreCreateResponse {
 
     public static StoreCreateResponse toResponse(Store store) {
         return StoreCreateResponse.builder()
+                .id(store.getId())
                 .category(store.getCategory())
                 .storeStatus(store.getStoreStatus())
                 .name(store.getName())

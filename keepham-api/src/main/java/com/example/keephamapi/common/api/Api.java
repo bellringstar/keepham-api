@@ -35,7 +35,7 @@ public class Api<T> {
         return api;
     }
 
-    public static Api<Object> ERROR(ErrorCodeIfs errorCodeIfs, String description){
+    public static Api<Object> ERROR(ErrorCodeIfs errorCodeIfs, Object description){
         var api = new Api<Object>();
         api.result = Result.ERROR(errorCodeIfs, description);
         return api;

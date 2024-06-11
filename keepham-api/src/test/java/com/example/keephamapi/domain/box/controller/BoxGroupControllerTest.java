@@ -39,6 +39,7 @@ public class BoxGroupControllerTest {
     private ObjectMapper objectMapper;
 
     private BoxGroupCreateRequest validRequest;
+    private BoxGroupCreateRequest invalidRequest;
     private BoxGroup boxGroup;
 
     @BeforeEach
@@ -50,6 +51,12 @@ public class BoxGroupControllerTest {
                 .status(BoxGroupStatus.AVAILABLE)
                 .address(new Address("Sample City", "Sample Street", "12345"))
                 .coordinate(new Coordinate(37.5665, 126.9780))
+                .build();
+
+        invalidRequest = BoxGroupCreateRequest.builder()
+                .status(null)
+                .address(null)
+                .coordinate(null)
                 .build();
 
         boxGroup = BoxGroup.builder()
@@ -87,5 +94,15 @@ public class BoxGroupControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validRequest)))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void createBoxGroup_WithInvalidData_ShouldReturnBadRequest() throws Exception {
+        // When
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/box-group")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidRequest)))
+                .andExpect(status().isBadRequest());
     }
 }

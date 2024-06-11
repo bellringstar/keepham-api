@@ -4,10 +4,12 @@ import com.example.keephamapi.common.entity.Address;
 import com.example.keephamapi.common.entity.Coordinate;
 import com.example.keephamapi.common.error.ErrorCode;
 import com.example.keephamapi.common.exception.ApiException;
+import com.example.keephamapi.common.utils.ValidationUtils;
 import com.example.keephamapi.domain.box.dto.BoxGroupCreateRequest;
 import com.example.keephamapi.domain.box.entity.BoxGroup;
 import com.example.keephamapi.domain.box.entity.enums.BoxGroupStatus;
 import com.example.keephamapi.domain.box.repository.BoxGroupRepository;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,10 +34,14 @@ public class BoxGroupServiceTest {
     @Mock
     private BoxGroupRepository boxGroupRepository;
 
+    @Mock
+    private ValidationUtils validationUtils;
+
     @InjectMocks
     private BoxGroupService boxGroupService;
 
     private BoxGroupCreateRequest validRequest;
+    private BoxGroupCreateRequest invalidRequest;
     private BoxGroup boxGroup;
 
     @BeforeEach
@@ -44,6 +50,12 @@ public class BoxGroupServiceTest {
                 .status(BoxGroupStatus.AVAILABLE)
                 .address(new Address("Sample City", "Sample Street", "12345"))
                 .coordinate(new Coordinate(37.5665, 126.9780))
+                .build();
+
+        invalidRequest = BoxGroupCreateRequest.builder()
+                .status(null)
+                .address(null)
+                .coordinate(null)
                 .build();
 
         boxGroup = BoxGroup.builder()
@@ -95,5 +107,22 @@ public class BoxGroupServiceTest {
                 .isInstanceOf(ApiException.class)
                 .hasMessage("존재하지 않는 박스 그룹입니다.");
         verify(boxGroupRepository, times(1)).findById(boxGroupId);
+    }
+
+    @Test
+    void createBoxGroup_WithInvalidEntity_ShouldThrowException() {
+        // Given
+        BoxGroup invalidBoxGroup = BoxGroup.builder()
+                .status(null)
+                .address(null)
+                .coordinate(null)
+                .build();
+
+        doThrow(new ConstraintViolationException("유효하지 않은 데이터입니다.", null)).when(validationUtils).validate(any(BoxGroup.class));
+
+        // When / Then
+        assertThatThrownBy(() -> boxGroupService.createBoxGroup(invalidRequest))
+                .isInstanceOf(ConstraintViolationException.class)
+                .hasMessageContaining("유효하지 않은 데이터입니다.");
     }
 }

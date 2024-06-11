@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum BoxGroupStatus {
 
+    ENROLL("등록"),
     AVAILABLE("이용 가능"),
     UNAVAILABLE("고장"),
     DELETED("제거된 그룹");

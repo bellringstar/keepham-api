@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -33,15 +34,18 @@ public class BoxGroup {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "상태는 필수 항목입니다.")
     private BoxGroupStatus status;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "boxGroup")
     private List<ChatRoom> chatRooms = new ArrayList<>();
 
     @Embedded
+    @NotNull(message = "주소는 필수 항목입니다.")
     private Address address;
 
     @Embedded
+    @NotNull(message = "좌표는 필수 항목입니다.")
     private Coordinate coordinate;
 
     @OneToMany(mappedBy = "boxGroup")

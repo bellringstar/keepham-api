@@ -19,6 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class UnitBox {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "상태는 필수 항목입니다.")
     private UnitBoxStatus status;
 
     @OneToOne(fetch = FetchType.LAZY)
