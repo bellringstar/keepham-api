@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,11 +41,11 @@ public class ChatRoomController {
     private final StoreViewService storeViewService;
 
     @PostMapping
-    public Api<ChatRoomCreateResponse> createChatRoom(@RequestBody @Valid ChatRoomCreateRequest request, Authentication auth) {
+    public Api<ChatRoomCreateResponse> createChatRoom(@RequestBody @Validated ChatRoomCreateRequest request, Authentication auth) {
 
         Member member = memberViewService.findMemberByLoginId(auth.getName());
         Store store = storeViewService.findStoreById(request.getStoreId());
-        BoxGroup boxGroup = boxGroupViewService.findAvailableBoxById(request.getBoxId());
+        BoxGroup boxGroup = boxGroupViewService.findAvailableBoxById(request.getBoxGroupId());
 
         ChatRoomCreateResponse response = chatRoomService.createChatRoom(request, member, store, boxGroup);
 
@@ -65,5 +66,4 @@ public class ChatRoomController {
 
         return Api.OK(chatRooms);
     }
-
 }

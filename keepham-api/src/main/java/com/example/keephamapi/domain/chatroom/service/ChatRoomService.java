@@ -1,5 +1,6 @@
 package com.example.keephamapi.domain.chatroom.service;
 
+import com.example.keephamapi.common.utils.ValidationUtils;
 import com.example.keephamapi.domain.box.entity.BoxGroup;
 import com.example.keephamapi.domain.chatroom.dto.create.ChatRoomCreateRequest;
 import com.example.keephamapi.domain.chatroom.dto.create.ChatRoomCreateResponse;
@@ -22,6 +23,7 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomEnterService chatRoomEnterService;
+    private final ValidationUtils validationUtils;
 
     public ChatRoomCreateResponse createChatRoom(ChatRoomCreateRequest request, Member member, Store store, BoxGroup boxGroup) {
 
@@ -35,6 +37,8 @@ public class ChatRoomService {
                 .store(store)
                 .boxGroup(boxGroup)
                 .build();
+
+        validationUtils.validate(chatRoom);
 
         chatRoomRepository.save(chatRoom);
 
