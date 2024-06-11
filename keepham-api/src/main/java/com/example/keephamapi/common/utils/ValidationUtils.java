@@ -21,6 +21,7 @@ public class ValidationUtils {
             for (ConstraintViolation<Object> violation : violations) {
                 sb.append(violation.getMessage()).append("\n");
             }
+            log.error("entity validation 에러 : {}", sb.toString());
             throw new IllegalArgumentException("Entity validation failed: " + sb.toString());
         }
     }

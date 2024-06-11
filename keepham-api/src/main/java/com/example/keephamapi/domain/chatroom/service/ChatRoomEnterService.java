@@ -2,6 +2,7 @@ package com.example.keephamapi.domain.chatroom.service;
 
 import com.example.keephamapi.common.error.ErrorCode;
 import com.example.keephamapi.common.exception.ApiException;
+import com.example.keephamapi.common.utils.ValidationUtils;
 import com.example.keephamapi.domain.box.entity.UnitBox;
 import com.example.keephamapi.domain.box.entity.enums.UnitBoxStatus;
 import com.example.keephamapi.domain.chatroom.dto.enter.ChatRoomEnterRequest;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatRoomEnterService {
 
     private final ChatRoomMemberRepository chatRoomMemberRepository;
+    private final ValidationUtils validationUtils;
 
     public ChatRoomEnterResponse enterChatRoom(ChatRoom chatRoom, ChatRoomEnterRequest request, Member member) {
         //1. chatroom이 비밀방이라면 request에 비밀번호와 동일한지 확인. ++ 방 최대 인원인지 확인 필요.
@@ -45,12 +47,14 @@ public class ChatRoomEnterService {
         ChatRoomMember chatRoomMember = ChatRoomMember.builder()
                 .chatRoom(chatRoom)
                 .member(member)
+                .unitBox(assignedBox)
                 .enterDate(LocalDateTime.now())
                 .status(ChatRoomMemberStatus.IN)
                 .build();
 
+        validationUtils.validate(chatRoomMember);
         chatRoomMemberRepository.save(chatRoomMember);
-        //4. redis 저장.
+        //TODO: 4. redis 저장.
 
         return ChatRoomEnterResponse.builder()
                 .box(assignedBox)

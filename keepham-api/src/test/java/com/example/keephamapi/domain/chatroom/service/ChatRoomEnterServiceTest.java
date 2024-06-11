@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.example.keephamapi.common.exception.ApiException;
+import com.example.keephamapi.common.utils.ValidationUtils;
 import com.example.keephamapi.domain.box.entity.BoxGroup;
 import com.example.keephamapi.domain.box.entity.UnitBox;
 import com.example.keephamapi.domain.box.entity.enums.UnitBoxStatus;
@@ -29,11 +30,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
-@Rollback(value = true)
+@Rollback
 class ChatRoomEnterServiceTest {
 
     @Mock
     private ChatRoomMemberRepository chatRoomMemberRepository;
+
+    @Mock
+    private ValidationUtils validationUtils;
 
     @InjectMocks
     private ChatRoomEnterService chatRoomEnterService;
